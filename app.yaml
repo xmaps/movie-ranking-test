@@ -1,0 +1,43 @@
+application: movie-ranking-1130
+version: 1
+runtime: python27
+threadsafe: true
+api_version: 1
+
+handlers:
+# Static assets
+- url: /favicon\.ico
+  static_files: favicon.ico
+  upload: favicon\.ico
+- url: /js
+  static_dir: static/js
+- url: /css
+  static_dir: static/css
+- url: /images
+  static_dir: static/images
+- url: /
+  static_files: templates/index.html
+  upload: templates/index\.html
+  secure: always
+- url: /my_profile/
+  static_files: templates/user.html
+  upload: templates/user\.html
+  secure: always
+- url: /movie/
+  static_files: templates/movie.html
+  upload: templates/movie\.html
+  secure: always
+- url: /movies_list/
+  static_files: templates/listmovies.html
+  upload: templates/listmovies\.html
+  secure: always
+
+# Endpoints handler
+- url: /_ah/spi/.*
+  script: movie_ranking_api.APPLICATION
+
+libraries:
+- name: pycrypto
+  version: latest
+- name: endpoints
+  version: latest
