@@ -57,7 +57,7 @@ class MovieRankingApi(remote.Service):
 
     ID_RESOURCE = endpoints.ResourceContainer(
       message_types.VoidMessage,
-      id=messages.IntegerField(1, variant=messages.Variant.INT32))
+      id=messages.IntegerField(1, variant=messages.Variant.INT64))
 
     @endpoints.method(ID_RESOURCE, MovieMessage,
                         path='movie/{id}', http_method='GET',
@@ -77,7 +77,7 @@ class MovieRankingApi(remote.Service):
             message = 'No movie with the id "%s" exists.' % request.id
             raise endpoints.NotFoundException(message)
         list_of_users_voted_movies_query = MovieRankingUser.query(MovieRankingUser.movie==selected_movie.key).fetch()
-        list_of_users_voted = [user_movie_relation.user.to_simpler_message() for user_movie_relation in list_of_users_voted_movies_query]
+        list_of_users_voted = [RankingUser.query(RankingUser.key==user_movie_relation.user).get().to_simpler_message() for user_movie_relation in list_of_users_voted_movies_query]
         return selected_movie.to_message(users_who_voted=list_of_users_voted)
     
     @endpoints.method(message_types.VoidMessage, UserMessage,
@@ -133,7 +133,7 @@ class MovieRankingApi(remote.Service):
             user_movie_relation.key.delete()
             
         for voted_movie in request.voted_movies:
-            current_movie = Movie.query(Movie.title==voted_movie.title, Movie.year==voted_movie.year).get()
+            current_movie = Movie.get_by_id(voted_movie.movie_identifier)
             current_counter = current_movie.number_of_users_who_voted
             current_movie.number_of_users_who_voted = current_counter + 1
             new_movie_user_vote = MovieRankingUser(user=selected_user.key,movie=current_movie.key)

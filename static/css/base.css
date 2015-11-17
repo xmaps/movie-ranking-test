@@ -1,0 +1,18 @@
+@CHARSET "ISO-8859-1";
+
+#ranking_movie_table_div{
+	float: left;
+    position: relative;
+    width: 55%;
+    margin-left: 5%;
+}
+
+#movie_details_div{
+	float: left;
+    position: relative;
+    width: 35%;
+    margin-left: 5%;
+    border-size:2px;
+	border-style:solid;
+	border-color:black;
+}

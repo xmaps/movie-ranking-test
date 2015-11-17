@@ -27,8 +27,7 @@ class UserMessage(messages.Message):
     not_votes_movies = messages.MessageField(MovieMessage, 6, repeated=True)
     
 class MovieVoteMessage(messages.Message):
-    title = messages.StringField(2, required=True)
-    year = messages.IntegerField(3, required=True)
+    movie_identifier = messages.IntegerField(1, required=True)
     
 class UserVoteRequest(messages.Message):
     voted_movies = messages.MessageField(MovieVoteMessage, 1, repeated=True)

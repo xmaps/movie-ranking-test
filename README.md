@@ -3,13 +3,18 @@ First Test using Google App Engine and Google Cloud Endpoints with Datastore. Pe
 
 *-* TODO *-*
 * Because time management reasons some simplifications here made:
-	** The users password is stored in plain text;
-	** The list of users is predefined so no "registration" functionality;
-	** The list of movies is predefined so no "add movies" functionality;
-	** Delete of user votes as to suffer various changes:
-		*** Not deleting all user votes to add them again but see only the changes;
-		*** Change the way the movie voter count is changed because iterating the movies just to change the counter is not good.
-	** Remove "SimplerUserMessage"
+** The users password is stored in plain text;
+** The list of users is predefined so no "registration" functionality;
+** The list of movies is predefined so no "add movies" functionality;
+** Delete of user votes as to suffer various changes:
+*** Not deleting all user votes to add them again but see only the changes;
+*** Change the way the movie voter count is changed because iterating the movies just to change the counter is not good.
+* Remove "SimplerUserMessage" and use only "UserMessage"
+* Remove "MovieVoteMessage" and use only "MovieMessage"
+* Function Documentation
+* Tests for the API functions
+* Tests for in Angular functions
+* Better Sytling
 
 * All this limited functionalities are to be added or changed in later versions.
 
@@ -24,6 +29,3 @@ List of Pre-defined Users:
 * 'name':'Jane',	'username':'test8',		'email':'test8@mr.com',		'password':'test8password'
 * 'name':'Harper',	'username':'test9',		'email':'test9@mr.com',		'password':'test9password'
 * 'name':'Rui',		'username':'test10',	'email':'test10@mr.com',	'password':'test10password'
-
-List of Pre-defined Movies:
-* IMDB'S Top 250 List

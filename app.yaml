@@ -19,17 +19,17 @@ handlers:
   static_files: templates/index.html
   upload: templates/index\.html
   secure: always
-- url: /my_profile/
-  static_files: templates/user.html
-  upload: templates/user\.html
+- url: /templates/login.view.html
+  static_files: templates/login.view.html
+  upload: templates/login\.view\.html
+  secure: always 
+- url: /templates/listmovies.view.html
+  static_files: templates/listmovies.view.html
+  upload: templates/listmovies\.view\.html
   secure: always
-- url: /movie/
-  static_files: templates/movie.html
-  upload: templates/movie\.html
-  secure: always
-- url: /movies_list/
-  static_files: templates/listmovies.html
-  upload: templates/listmovies\.html
+- url: /templates/profile.view.html
+  static_files: templates/profile.view.html
+  upload: templates/profile\.view\.html
   secure: always
 
 # Endpoints handler

@@ -1,0 +1,46 @@
+<div>
+	<div class="col-md-6 col-md-offset-3">
+		<div id="options_header" align="center">
+			<a href="#/" class="btn btn-info">My Profile</a>
+		</div>
+		<h2 align="center">Top Ranking Movies</h2>
+		<p align="center">Total number of Movies: {{moviesctrl.movieslist.length}}</p>
+		<br>
+		<br>
+	</div>
+	<div id="ranking_movie_table_div">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Position</th>
+					<th>Title</th>
+					<th>Year</th>
+					<th>Number Users Who Voted</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="movie in moviesctrl.movieslist">
+					<td>{{$index+1}}</td>
+					<td>{{movie.title}}</td>
+					<td>{{movie.year}}</td>
+					<td>{{movie.number_of_users_who_voted}}</td>
+					<td><input class="btn btn-default" type="button" value="Details" ng-click="moviesctrl.getMovie(movie.id)"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div id="movie_details_div" ng-show="moviesctrl.has_movie_details">
+		<h4 align="justify">Title: {{moviesctrl.getted_movie.title}}</h4>
+		<h4 align="justify">Year: {{moviesctrl.getted_movie.year}}</h4>
+		<h4 align="justify">Number Users Who Voted: {{moviesctrl.getted_movie.number_of_users_who_voted}}</h4>
+		<h4 align="justify">List of Users who voted in this movie:</h4>
+		<table class="table">
+			<tbody>
+				<tr ng-repeat="user in moviesctrl.getted_movie.users_who_voted">
+					<td>{{user.username}}</td>
+				</tr>	
+			</tbody>
+		</table>
+	</div>
+</div>
