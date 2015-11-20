@@ -1,15 +1,24 @@
 <div>
+	<nav class="navbar navbar-inverse">
+	  <div class="container-fluid">
+	    <div class="navbar-header">
+	      <a class="navbar-brand">Personal Movie Ranking</a>
+	    </div>
+	    <div>
+	      <ul class="nav navbar-nav">
+	        <li><a href="#/">My Profile</a></li>
+	      </ul>
+	    </div>
+	  </div>
+	</nav>
 	<div class="col-md-6 col-md-offset-3">
-		<div id="options_header" align="center">
-			<a href="#/" class="btn btn-info">My Profile</a>
-		</div>
 		<h2 align="center">Top Ranking Movies</h2>
 		<p align="center">Total number of Movies: {{moviesctrl.movieslist.length}}</p>
 		<br>
 		<br>
 	</div>
-	<div id="ranking_movie_table_div">
-		<table class="table">
+	<div id="ranking_movie_table_div" class="col-md-6 col-md-offset-3">
+		<table class="table table-striped table-hover table-bordered table-responsive">
 			<thead>
 				<tr>
 					<th>Position</th>
@@ -25,22 +34,38 @@
 					<td>{{movie.title}}</td>
 					<td>{{movie.year}}</td>
 					<td>{{movie.number_of_users_who_voted}}</td>
-					<td><input class="btn btn-default" type="button" value="Details" ng-click="moviesctrl.getMovie(movie.id)"></td>
+					<td><button type="button" class="btn btn-default" data-toggle="modal" ng-click="moviesctrl.getMovie(movie.id)" data-target="#myModal">Details</button></td>
 				</tr>
 			</tbody>
 		</table>
 	</div>
-	<div id="movie_details_div" ng-show="moviesctrl.has_movie_details">
-		<h4 align="justify">Title: {{moviesctrl.getted_movie.title}}</h4>
-		<h4 align="justify">Year: {{moviesctrl.getted_movie.year}}</h4>
-		<h4 align="justify">Number Users Who Voted: {{moviesctrl.getted_movie.number_of_users_who_voted}}</h4>
-		<h4 align="justify">List of Users who voted in this movie:</h4>
-		<table class="table">
-			<tbody>
-				<tr ng-repeat="user in moviesctrl.getted_movie.users_who_voted">
-					<td>{{user.username}}</td>
-				</tr>	
-			</tbody>
-		</table>
+	<div id="myModal" class="modal fade" role="dialog" ng-show="moviesctrl.has_movie_details">
+	  <div class="modal-dialog">
+	
+	    <!-- Modal content-->
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        <h4 class="modal-title">{{moviesctrl.getted_movie.title}}</h4>
+	      </div>
+	      <div class="modal-body">
+			<h4 align="justify">Title: {{moviesctrl.getted_movie.title}}</h4>
+			<h4 align="justify">Year: {{moviesctrl.getted_movie.year}}</h4>
+			<h4 align="justify">Number Users Who Voted: {{moviesctrl.getted_movie.number_of_users_who_voted}}</h4>
+			<h4 align="justify">List of Users who voted in this movie:</h4>
+			<table class="table table-striped table-hover table-bordered table-responsive">
+				<tbody>
+					<tr ng-repeat="user in moviesctrl.getted_movie.users_who_voted">
+						<td>{{user.username}}</td>
+					</tr>	
+				</tbody>
+			</table>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	
+	  </div>
 	</div>
 </div>

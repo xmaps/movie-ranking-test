@@ -1,18 +1,12 @@
 @CHARSET "ISO-8859-1";
 
-#ranking_movie_table_div{
-	float: left;
-    position: relative;
-    width: 55%;
-    margin-left: 5%;
+footer {
+	margin-top: 15px;
+	background-color: #555;
+	color: white;
+	padding: 15px;
 }
 
-#movie_details_div{
-	float: left;
-    position: relative;
-    width: 35%;
-    margin-left: 5%;
-    border-size:2px;
-	border-style:solid;
-	border-color:black;
+body {
+	background-color: #f1f1f1;
 }

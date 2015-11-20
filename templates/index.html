@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-	<html ng-app="movieranking">
+	<html ng-app="movieranking" lang="en">
 		<head>
+			<meta name="viewport" content="width=device-width, initial-scale=1">
 			<meta charset="ISO-8859-1">
 			<script src="//code.angularjs.org/1.4.7/angular.min.js"></script>
 			<script src="//code.angularjs.org/1.4.7/angular-route.js"></script>
 			<script src="//code.angularjs.org/1.4.7/angular-cookies.js"></script>
 			<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+			<script src="js/bootstrap.min.js"></script>
 			<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 			<link rel="stylesheet" type="text/css" href="css/base.css">
 			<script src="js/authenticationservice.js"></script>
@@ -16,6 +18,9 @@
 			<title>Personal Movie Ranking</title>
 		</head>
 		<body>
-		<div ng-view></div>
+		<div ng-view class="container-fluid"></div>
+			<footer class="container-fluid">
+  				<p>Personal Movie Ranking 2015</p>
+			</footer>
 		</body>
 	</html>

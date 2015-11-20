@@ -1,59 +1,70 @@
-<div class="col-md-6 col-md-offset-3">
-	<div id="options_header" align="center">
-		<a href="#/movieslist" class="btn btn-info">Ranking Movies</a>
-		<button type="button" ng-click="user.logout()" class="btn btn-info">Logout</button>
+<div>
+	<nav class="navbar navbar-inverse">
+	  <div class="container-fluid">
+	    <div class="navbar-header">
+	      <a class="navbar-brand">Personal Movie Ranking</a>
+	    </div>
+	    <div>
+	      <ul class="nav navbar-nav">
+	        <li><a href="#/movieslist">Ranking Movies</a></li>
+	        <li><a ng-click="user.logout()">Logout</a></li>
+	      </ul>
+	    </div>
+	  </div>
+	</nav>
+	<div class="col-md-6 col-md-offset-3">
+		<h2>Welcome {{user.name}}! To your personal information.</h2>
+		<div ng-show="user.personal_info_error" class="alert alert-danger">{{user.personal_info_error}}</div>
+		<h4>Name: {{user.name}}</h4>
+		<h4>Username: {{user.username}}</h4>
+		<h4>Email: {{user.email}}</h4>
+		<h4>Date Joined: {{user.joined_date}}</h4>
+		<br>
+		<br>
+		<h3 align="center">Voting Section</h3>
+	    <form name="form" ng-submit="user.moviesVote()" role="form">
+			<table class="table table-responsive">
+				<tr>
+					<td>
+						<div align="center">Not Voted Movies</div>
+						<div id='not_voted_movies_div' style="overflow: auto; height: 350px; width: 250px;" onscroll="OnDivScroll(this);" align="center">
+							<select multiple="multiple" id="not_voted_movies" size="" onfocus="OnSelectFocus(this);" style="min-width:100%;min-height:99%;">
+								<option ng-repeat="not_voted_movie in user.notVotesMovies" value="{{not_voted_movie.id}}">{{not_voted_movie.title}} ({{not_voted_movie.year}})</option>
+							</select>
+						</div>
+						<div align="center"><a id="add_all_button" onclick="addAllMovies()">Add all</a></div>
+					</td>
+					<td>
+						<br />
+						<br />
+						<br />
+						<br />
+						<div align="center">
+							<input id="add_button" class="btn btn-default" type="button" value="Add >" onclick="addMovies()">
+						</div>
+						<br />
+						<br />
+						<div align="center">
+							<input id="remove_button" class="btn btn-default" type="button" value="< Remove" onclick="removeMovies()">
+						</div>
+					</td>
+					<td>
+						<div align="center">Voted Movies</div>
+						<div id='voted_movies_div' style="overflow: auto; height: 350px; width: 250px;" onscroll="OnDivScroll(this);" align="center">
+							<select multiple="multiple" id="voted_movies" size="" onfocus="OnSelectFocus(this);" style="min-width:100%;min-height:99%;">
+								<option ng-repeat="voted_movie in user.votedMovies" value="{{voted_movie.id}}">{{voted_movie.title}} ({{voted_movie.year}})</option>
+							</select>
+						</div>
+						<div align="center"><a id="remove_all_button" onclick="removeAllMovies()">Remove all</a></div>
+					</td>
+				</tr>
+			</table>
+	        <div align="center" class="form-actions">
+				<div ng-show="user.vote_error" class="alert alert-danger">{{user.vote_error}}</div>
+				<div ng-show="user.vote_success" class="alert alert-success">{{user.vote_success}}</div>
+	            <button type="submit" class="btn btn-primary">Vote</button>
+	            <img ng-if="user.dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+	        </div>
+	    </form>
 	</div>
-	<h2>Welcome {{user.name}}! To your personal information.</h2>
-	<div ng-show="user.personal_info_error" class="alert alert-danger">{{user.personal_info_error}}</div>
-	<h4>Name: {{user.name}}</h4>
-	<h4>Username: {{user.username}}</h4>
-	<h4>Email: {{user.email}}</h4>
-	<h4>Date Joined: {{user.joined_date}}</h4>
-	<br>
-	<br>
-	<h3 align="center">Voting Section</h3>
-    <form name="form" ng-submit="user.moviesVote()" role="form">
-		<table class="table">
-			<tr>
-				<td>
-					<div align="center">Not Voted Movies</div>
-					<div id='not_voted_movies_div' style="overflow: auto; height: 350px; width: 250px;" onscroll="OnDivScroll(this);" align="center">
-						<select multiple="multiple" id="not_voted_movies" size="" onfocus="OnSelectFocus(this);" style="min-width:100%;min-height:99%;">
-							<option ng-repeat="not_voted_movie in user.notVotesMovies" value="{{not_voted_movie.id}}">{{not_voted_movie.title}} ({{not_voted_movie.year}})</option>
-						</select>
-					</div>
-					<div align="center"><a id="add_all_button" onclick="addAllMovies()">Add all</a></div>
-				</td>
-				<td>
-					<br />
-					<br />
-					<br />
-					<br />
-					<div align="center">
-						<input id="add_button" class="btn btn-default" type="button" value="Add >" onclick="addMovies()">
-					</div>
-					<br />
-					<br />
-					<div align="center">
-						<input id="remove_button" class="btn btn-default" type="button" value="< Remove" onclick="removeMovies()">
-					</div>
-				</td>
-				<td>
-					<div align="center">Voted Movies</div>
-					<div id='voted_movies_div' style="overflow: auto; height: 350px; width: 250px;" onscroll="OnDivScroll(this);" align="center">
-						<select multiple="multiple" id="voted_movies" size="" onfocus="OnSelectFocus(this);" style="min-width:100%;min-height:99%;">
-							<option ng-repeat="voted_movie in user.votedMovies" value="{{voted_movie.id}}">{{voted_movie.title}} ({{voted_movie.year}})</option>
-						</select>
-					</div>
-					<div align="center"><a id="remove_all_button" onclick="removeAllMovies()">Remove all</a></div>
-				</td>
-			</tr>
-		</table>
-        <div align="center" class="form-actions">
-			<div ng-show="user.vote_error" class="alert alert-danger">{{user.vote_error}}</div>
-			<div ng-show="user.vote_success" class="alert alert-success">{{user.vote_success}}</div>
-            <button type="submit" class="btn btn-primary">Vote</button>
-            <img ng-if="user.dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-        </div>
-    </form>
 </div>
