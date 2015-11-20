@@ -7,7 +7,7 @@ from protorpc import remote
 from protorpc import message_types
 from protorpc import messages
 from movie_ranking_api_messages import LoginResponse, ListMoviesMessage,\
-    MovieMessage, UserMessage, UserVoteRequest, LoginRequest
+    MovieMessage, UserMessage, UserVoteRequest, LoginRequest, VoteResponse
 from models import RankingUser, Movie, MovieRankingUser
 import jwt
 
@@ -33,7 +33,7 @@ class MovieRankingApi(remote.Service):
             encoded_jwt = jwt.encode({'username': entity.username,'email':entity.email}, JWT_SECRET_KEY, algorithm='HS256')
         else:
             message = 'Not valid user credentials'
-            raise endpoints.ForbiddenException(message)
+            raise endpoints.UnauthorizedException(message)
 
         return LoginResponse(jwt=encoded_jwt)
 
@@ -49,8 +49,8 @@ class MovieRankingApi(remote.Service):
             An Instance with a list of all the movies in the system ordered by the most voted
         """
         #get jwt and validates if user exists
-        self.validateJWToken(self.request_state)
-            
+        self.validate_jwtoken(self.request_state)
+        #gets all the movies in the system ordered by number of votes and then title
         list_of_movies = Movie.query().order(-Movie.number_of_users_who_voted, Movie.title).fetch()
         movies = [movie.to_message() for movie in list_of_movies]
         return ListMoviesMessage(movies=movies)
@@ -70,7 +70,7 @@ class MovieRankingApi(remote.Service):
             An Instance containing the Movie Details
         """
         #get jwt and validates if user exists
-        self.validateJWToken(self.request_state)
+        self.validate_jwtoken(self.request_state)
         
         selected_movie = Movie.get_by_id(request.id)
         if selected_movie is None:
@@ -90,9 +90,8 @@ class MovieRankingApi(remote.Service):
         Returns:
             An Instance containing the User Details.
         """
-        # Get the HTTP Authorization header.
         #get jwt and validates if user exists
-        selected_user = self.validateJWToken(self.request_state)
+        selected_user = self.validate_jwtoken(self.request_state)
         
         list_of_voted_movies_query = MovieRankingUser.query(MovieRankingUser.user==selected_user.key).fetch()
         list_of_voted_movies = []
@@ -111,7 +110,7 @@ class MovieRankingApi(remote.Service):
         list_of_not_voted_movies = [system_movie.to_message() for system_movie in list_of_not_voted_movies_query]
         return selected_user.to_message(votes_movies=list_of_voted_movies, not_votes_movies=list_of_not_voted_movies)
     
-    @endpoints.method(UserVoteRequest, message_types.VoidMessage,
+    @endpoints.method(UserVoteRequest, VoteResponse,
                       path='moviesvote', http_method='POST',
                       name='movies.vote')
     def movies_vote(self, request):
@@ -122,7 +121,7 @@ class MovieRankingApi(remote.Service):
             A void message if everthing goes well or an error.
         """
         #get jwt and validates if user exists
-        selected_user = self.validateJWToken(self.request_state)
+        selected_user = self.validate_jwtoken(self.request_state)
         
         list_of_voted_movies_query = MovieRankingUser.query(MovieRankingUser.user==selected_user.key).fetch()
         for user_movie_relation in list_of_voted_movies_query:
@@ -139,22 +138,20 @@ class MovieRankingApi(remote.Service):
             new_movie_user_vote = MovieRankingUser(user=selected_user.key,movie=current_movie.key)
             current_movie.put()
             new_movie_user_vote.put()
-        return message_types.VoidMessage()
+        return VoteResponse(status_msg='Vote casted with success.')
     
     @staticmethod
-    def validateJWToken(request_state):
+    def validate_jwtoken(request_state):
         # Get the HTTP Authorization header.
         auth_header = request_state.headers.get('authorization')
         if not auth_header:
             raise endpoints.UnauthorizedException("No authorization header.")
-
         # Get the encoded jwt token.
         auth_token = auth_header.split(' ').pop()
-
         # Decode and verify the token
         try:
             payload = jwt.decode(auth_token, JWT_SECRET_KEY, algorithms=['HS256'])
-            # Do your own check here.
+
             entity = RankingUser.query(RankingUser.username==payload['username'], RankingUser.email==payload['email']).get()
             if entity is not None:
                 return entity

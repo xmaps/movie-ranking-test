@@ -38,3 +38,6 @@ class LoginRequest(messages.Message):
 
 class LoginResponse(messages.Message):
     jwt = messages.StringField(1, required=True)
+    
+class VoteResponse(messages.Message):
+    status_msg = messages.StringField(1, required=True)
